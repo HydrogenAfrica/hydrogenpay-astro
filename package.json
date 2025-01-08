@@ -1,0 +1,42 @@
+{
+	"name": "hydrogenpay-astro",
+	"version": "0.0.1",
+	"description": "Hydrogen Pay wrapper for astro",
+	"homepage": "https://github.com/HydrogenAfrica/hydrogenpay-astro.git",
+	"license": "MIT",
+	"type": "module",
+	"main": "index.js",
+	"exports": {
+		".": "./index.js",
+		"./astro": "./MyAstroComponent.astro"
+	},
+	"files": [
+		"index.js",
+		"HydrogenPay.astro"
+	],
+	"keywords": [
+		"astro",
+		"withastro",
+		"astro-component",
+		"hydrogenpay",
+		"payments",
+		"hydrogen payment"
+	],
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"peerDependencies": {
+		"astro": "^3.0.0"
+	},
+	"author": "hydrogenpay <support@hydrogenpay.com> (https://github.com/HydrogenAfrica)",
+	"devDependencies": {
+		"astro": "^4.16.14"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/HydrogenAfrica/hydrogenpay-astro.git"
+	},
+	"bugs": {
+		"url": "https://github.com/HydrogenAfrica/hydrogenpay-astro/issues"
+	}
+}

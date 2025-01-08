@@ -1,0 +1,184 @@
+---
+export interface Props {
+	title?: string;
+	description?: string;
+	apiKey: string;
+	currency: string;
+	amount: number;
+	email: string;
+	customerName?: string;
+	onSuccess: any;
+	onClose: any;
+	frequency?: number;
+	meta?: any;
+	isRecurring?: boolean;
+	buttonText?: string;
+	buttonStyle?: string;
+	endDate?: string;
+}
+
+const {
+	title,
+	description,
+	apiKey,
+	buttonStyle,
+	currency,
+	amount,
+	email,
+	customerName,
+	meta,
+	frequency,
+	isRecurring,
+	endDate,
+	buttonText,
+} = Astro.props;
+
+var onClose = Astro.props.onClose
+var onSuccess = Astro.props.onSuccess;
+
+console.log(typeof window !== 'undefined')
+if (typeof window !== 'undefined') {
+  //@ts-ignore
+	window.onCloseHandler = onClose;
+   //@ts-ignore
+	window.onSuccessHandler = onSuccess;
+}
+
+console.log(onClose, onSuccess)
+---
+
+<div class="astro-component">
+	<script
+		is:inline
+		src="https://hydrogenshared.blob.core.windows.net/paymentgateway/paymentGatewayIntegration_v1PROD.js"
+	></script>
+	<button id="hydrogenPayButton">{buttonText || 'Pay Now'}</button>
+
+	<script
+		is:inline
+		define:vars={{
+			title,
+			description,
+			apiKey,
+			buttonStyle,
+			currency,
+			amount,
+			email,
+			customerName,
+			meta,
+			frequency,
+			isRecurring,
+			endDate,
+			onClose,
+			onSuccess,
+			buttonText,
+		}}
+	>
+		console.log(
+    title,
+			description,
+			apiKey,
+			buttonStyle,
+			currency,
+			amount,
+			email,
+			customerName,
+			meta,
+			frequency,
+			isRecurring,
+			endDate,
+			onClose,
+			onSuccess,
+			buttonText,
+      window?.onCloseHandler,
+			'test'
+		);
+
+    // window.onCloseHandler = Astro.props.onClose;
+		// window.onSuccessHandler = Astro.props.onSuccess;
+
+		console.log(window, "i have access to window object")
+
+			const button = document.getElementById('hydrogenPayButton');
+			if (!button) {
+				console.error('hydrogenPayButton element not found!');
+				return;
+			}
+
+			button.addEventListener('click', async function hydrogenPay() {
+				let checkStatus;
+
+				// Initialize payment
+				const getRef = window.handlePgData(
+					{
+						currency: currency,
+						amount: amount,
+						email: email,
+						description: description,
+						customerName: customerName,
+						meta: meta,
+						frequency: frequency,
+						isAPI: false,
+						...(isRecurring && endDate ? { endDate: endDate } : {}),
+					},
+					apiKey,
+					(e) => {
+						if (window?.onHydrogenPayClose) {
+							window?.onHydrogenPayClose(e);
+						}
+						clearInterval(checkStatus);
+					}
+				);
+
+				// Get payment reference
+				const transactionRef = await getRef;
+
+				if (
+					transactionRef &&
+					transactionRef !== 'Error in initiating payment'
+				) {
+					checkStatus = setInterval(async function () {
+						const checkPaymentStatus = await window.handlePaymentStatus(
+							transactionRef,
+							apiKey
+						);
+
+						if (checkPaymentStatus.status === 'Paid') {
+							if (window?.onHydrogenPaySuccess) {
+								window?.onHydrogenPaySuccess(checkPaymentStatus, () =>
+									window.closeModal({ transactionRef })
+								);
+							}
+							clearInterval(checkStatus);
+						}
+					}, 2000);
+				} else {
+					console.error(`ERROR: ${transactionRef}`);
+				}
+			});
+		
+	</script>
+</div>
+
+<!-- <script is:inline>
+	// Listen for custom events
+	document.addEventListener('hydrogenClose', (event) => {
+		if (typeof window.onCloseHandler === 'function') {
+			window.onCloseHandler(event.detail);
+		} else {
+			console.error('onCloseHandler is not defined');
+		}
+	});
+
+	document.addEventListener('hydrogenSuccess', (event) => {
+		if (typeof window.onSuccessHandler === 'function') {
+			window.onSuccessHandler(event.detail);
+		} else {
+			console.error('onSuccessHandler is not defined');
+		}
+	});
+
+	// Attach handlers to the window
+	window.onCloseHandler = Astro.props.onClose;
+	window.onSuccessHandler = Astro.props.onSuccess;
+</script> -->

@@ -1,0 +1,40 @@
+---
+import HydrogenPayAstro from 'hydrogenpay-astro';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<h1>Astro</h1>
+		<HydrogenPayAstro
+			buttonText="Hydrogen Pay"
+			amount={500}
+			email="test@mail.com"
+			customerName="John Doe"
+			apiKey="PK_TEST_cca53e0b3bc7847aff94502b8a585f84"
+			description="Test description"
+			currency="NGN"
+			frequency={1}
+			isRecurring={false}
+			endDate="2025-10-02"
+			meta="ewr34we4w"
+		/>
+	</body>
+	<script is:inline>
+		window.onload = function () {
+			window.onHydrogenPaySuccess = function (response, closeModal) {
+				console.log(response);
+				setTimeout(() => closeModal(), 3000);
+			};
+			window.onHydrogenPayClose = function (close) {
+				console.log(close);
+			};
+		};
+	</script>
+</html>
