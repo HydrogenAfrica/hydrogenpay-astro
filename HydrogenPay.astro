@@ -35,16 +35,6 @@ const {
 
 var onClose = Astro.props.onClose
 var onSuccess = Astro.props.onSuccess;
-
-console.log(typeof window !== 'undefined')
-if (typeof window !== 'undefined') {
-  //@ts-ignore
-	window.onCloseHandler = onClose;
-   //@ts-ignore
-	window.onSuccessHandler = onSuccess;
-}
-
-console.log(onClose, onSuccess)
 ---
 
 <div class="astro-component">
@@ -74,30 +64,6 @@ console.log(onClose, onSuccess)
 			buttonText,
 		}}
 	>
-		console.log(
-    title,
-			description,
-			apiKey,
-			buttonStyle,
-			currency,
-			amount,
-			email,
-			customerName,
-			meta,
-			frequency,
-			isRecurring,
-			endDate,
-			onClose,
-			onSuccess,
-			buttonText,
-      window?.onCloseHandler,
-			'test'
-		);
-
-    // window.onCloseHandler = Astro.props.onClose;
-		// window.onSuccessHandler = Astro.props.onSuccess;
-
-		console.log(window, "i have access to window object")
 
 			const button = document.getElementById('hydrogenPayButton');
 			if (!button) {
@@ -156,29 +122,5 @@ console.log(onClose, onSuccess)
 					console.error(`ERROR: ${transactionRef}`);
 				}
 			});
-		
 	</script>
 </div>
-
-<!-- <script is:inline>
-	// Listen for custom events
-	document.addEventListener('hydrogenClose', (event) => {
-		if (typeof window.onCloseHandler === 'function') {
-			window.onCloseHandler(event.detail);
-		} else {
-			console.error('onCloseHandler is not defined');
-		}
-	});
-
-	document.addEventListener('hydrogenSuccess', (event) => {
-		if (typeof window.onSuccessHandler === 'function') {
-			window.onSuccessHandler(event.detail);
-		} else {
-			console.error('onSuccessHandler is not defined');
-		}
-	});
-
-	// Attach handlers to the window
-	window.onCloseHandler = Astro.props.onClose;
-	window.onSuccessHandler = Astro.props.onSuccess;
-</script> -->
