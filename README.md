@@ -1,5 +1,5 @@
 <p align="center">
-<img width="400" valign="top" src="https://hydrogenpay.com/wp-content/uploads/2023/05/logo.png" data-canonical-src="https://hydrogenpay.com/wp-content/uploads/2023/05/logo.png" style="max-width:100%; ">
+<img width="400" valign="top" src="https://hydrogenshared.blob.core.windows.net/shared/hydrogen-logo.png" data-canonical-src="https://hydrogenshared.blob.core.windows.net/shared/hydrogen-logo.png" style="max-width:100%; ">
 </p>
 <br/>
 
