@@ -7,14 +7,16 @@ export interface Props {
 	amount: number;
 	email: string;
 	customerName?: string;
-	onSuccess: any;
-	onClose: any;
+	onSuccess?: any;
+	onClose?: any;
 	frequency?: number;
 	meta?: any;
 	isRecurring?: boolean;
 	buttonText?: string;
 	buttonStyle?: string;
 	endDate?: string;
+	transactionRef?: string;
+	metaData?: Array<{ fieldName: string; fieldDefaultValue: string, fieldKey: string, fieldType: number }>;
 }
 
 const {
@@ -31,6 +33,8 @@ const {
 	isRecurring,
 	endDate,
 	buttonText,
+	transactionRef,
+	metaData = []
 } = Astro.props;
 
 var onClose = Astro.props.onClose
@@ -40,7 +44,7 @@ var onSuccess = Astro.props.onSuccess;
 <div class="astro-component">
 	<script
 		is:inline
-		src="https://hydrogenshared.blob.core.windows.net/paymentgateway/paymentGatewayIntegration_v1PROD.js"
+		src="https://js.hydrogenpay.com/inline.js"
 	></script>
 	<button id="hydrogenPayButton">{buttonText || 'Pay Now'}</button>
 
@@ -62,6 +66,8 @@ var onSuccess = Astro.props.onSuccess;
 			onClose,
 			onSuccess,
 			buttonText,
+			transactionRef,
+			metaData
 		}}
 	>
 
@@ -86,6 +92,8 @@ var onSuccess = Astro.props.onSuccess;
 						frequency: frequency,
 						isAPI: false,
 						...(isRecurring && endDate ? { endDate: endDate } : {}),
+						transactionRef,
+						metaData: metaData
 					},
 					apiKey,
 					(e) => {
@@ -97,29 +105,29 @@ var onSuccess = Astro.props.onSuccess;
 				);
 
 				// Get payment reference
-				const transactionRef = await getRef;
+				const getTransactionRef = await getRef;
 
 				if (
-					transactionRef &&
-					transactionRef !== 'Error in initiating payment'
+					getTransactionRef &&
+					getTransactionRef !== 'Error in initiating payment'
 				) {
 					checkStatus = setInterval(async function () {
 						const checkPaymentStatus = await window.handlePaymentStatus(
-							transactionRef,
+						getTransactionRef,
 							apiKey
 						);
 
 						if (checkPaymentStatus.status === 'Paid') {
 							if (window?.onHydrogenPaySuccess) {
 								window?.onHydrogenPaySuccess(checkPaymentStatus, () =>
-									window.closeModal({ transactionRef })
+									window.closeModal({ getTransactionRef })
 								);
 							}
 							clearInterval(checkStatus);
 						}
 					}, 2000);
 				} else {
-					console.error(`ERROR: ${transactionRef}`);
+					console.error(`ERROR: ${getTransactionRef}`);
 				}
 			});
 	</script>

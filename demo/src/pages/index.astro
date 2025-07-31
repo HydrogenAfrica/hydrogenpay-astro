@@ -1,5 +1,5 @@
 ---
-import HydrogenPayAstro from 'hydrogenpay-astro';
+import HydrogenPayAstro from '../../../HydrogenPay.astro';
 ---
 
 <html lang="en">
@@ -24,6 +24,10 @@ import HydrogenPayAstro from 'hydrogenpay-astro';
 			isRecurring={false}
 			endDate="2025-10-02"
 			meta="ewr34we4w"
+			transactionRef={`TRX_${Math.random().toString(36).substr(2, 10).toUpperCase()}`}
+			metaData={[
+			// 	{ fieldName: "uniqueId", fieldDefaultValue: "DevStore14", fieldKey: "uniqueId", fieldType: 1 },
+			]}
 		/>
 	</body>
 	<script is:inline>

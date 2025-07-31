@@ -1,6 +1,6 @@
 {
 	"name": "hydrogenpay-astro",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Hydrogen Pay wrapper for astro",
 	"homepage": "https://github.com/HydrogenAfrica/hydrogenpay-astro.git",
 	"license": "MIT",

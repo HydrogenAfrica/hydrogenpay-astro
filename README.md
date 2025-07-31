@@ -60,6 +60,10 @@ import HydrogenPayAstro from 'hydrogenpay-astro';
       isRecurring={false}
       endDate="2025-10-02"
       meta="ewr34we4w"
+      transactionRef={`TRX_${Math.random().toString(36).substr(2, 10).toUpperCase()}`}
+			metaData={[
+			// 	{ fieldName: "uniqueId", fieldDefaultValue: "DevStore14", fieldKey: "uniqueId", fieldType: 1 },
+			]}
     />
   </body>
   <script is:inline>
@@ -92,3 +96,5 @@ import HydrogenPayAstro from 'hydrogenpay-astro';
 | isRecurring          | `bool`     | Optional | Recurring Payment                                                           |
 | frequency            | `String`   | Optional | Recurring Payment frequency                                                 |
 | endDate              | `String`   | Optional | Recurring Payment End Date. OPTIONAL but (REQUIRED when isRecurring = true) |
+| transactionRef      | `String`   | Optional | Custom Transaction reference |
+| metaData      | `Array`   | Optional | Transaction meta data |
